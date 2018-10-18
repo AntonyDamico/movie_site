@@ -1,7 +1,17 @@
+<style>
+    li {
+        display: flex;
+    }
+
+</style>
+
 <h1>Movie list</h1>
 
 <ul>
     {% for movie in movies %}
-        <li>{{ movie.title }}</li>
+        <li>
+            {{ movie.title }} --
+            {% include 'lists/snippets/delete.html' %}
+        </li>
     {% endfor %}
 </ul>

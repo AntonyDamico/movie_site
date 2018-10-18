@@ -1,0 +1,4 @@
+<form action="{% url 'list:delete_movie' movie.id %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">X</button>
+</form>
