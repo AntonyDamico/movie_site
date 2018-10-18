@@ -1,0 +1,7 @@
+<h1>Add movie</h1>
+
+<form action="{% url 'list:add_movie' %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Submit</button>
+</form>

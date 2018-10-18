@@ -19,3 +19,8 @@ class List(models.Model):
 
     def movie_in_list(self, movie):
         return movie in self.movie_list.all()
+
+    # TODO: add the new movie to the list
+    def add_movie_to_list(self, movie):
+        new_movie = Movie.objects.get_or_create(movie)
+        # add to the list
