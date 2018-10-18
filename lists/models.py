@@ -23,4 +23,7 @@ class List(models.Model):
     # TODO: add the new movie to the list
     def add_movie_to_list(self, movie):
         new_movie = Movie.objects.get_or_create(movie)
-        # add to the list
+        new_movie.list_set.add(self)
+
+    def remove_movie_from_list(self, movie):
+        movie.list_set.remove(self)
