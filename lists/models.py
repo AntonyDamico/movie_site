@@ -16,3 +16,6 @@ class List(models.Model):
 
     def get_user_movies(self):
         return self.movie_list.all()
+
+    def movie_in_list(self, movie):
+        return movie in self.movie_list.all()
