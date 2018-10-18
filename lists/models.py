@@ -4,6 +4,7 @@ from django.conf import settings
 
 from movies.models import Movie
 
+
 class List(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -20,7 +21,6 @@ class List(models.Model):
     def movie_in_list(self, movie):
         return movie in self.movie_list.all()
 
-    # TODO: add the new movie to the list
     def add_movie_to_list(self, movie):
         new_movie = Movie.objects.get_or_create(movie)
         new_movie.list_set.add(self)

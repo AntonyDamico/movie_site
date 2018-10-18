@@ -4,6 +4,7 @@ from django.db.models import signals
 
 from movieSiteDjango.utils import get_unique_slug
 
+
 class MovieManager(models.Manager):
     def get_or_create(self, movie):
         qs = self.get_queryset().filter(title=movie.title)
@@ -12,6 +13,7 @@ class MovieManager(models.Manager):
             return new_movie
         movie.save()
         return movie
+
 
 class Movie(models.Model):
     title = models.CharField(max_length=100)
@@ -27,8 +29,10 @@ class Movie(models.Model):
     def get_absolute_url(self):
         return reverse('posts:detail', kwargs={'slug': self.slug})
 
+
 def movie_pre_save_reciever(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = get_unique_slug(instance, instance.title)
+
 
 signals.pre_save.connect(movie_pre_save_reciever, sender=Movie)
