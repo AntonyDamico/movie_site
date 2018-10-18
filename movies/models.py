@@ -6,12 +6,12 @@ from movieSiteDjango.utils import get_unique_slug
 
 class MovieManager(models.Manager):
     def get_or_create(self, movie):
-        # change the movie dict to a qs
-        # check if the new qs is in the Movie.objects.all()
-            # return the movie
-        # create a new movie and return it
-        print('movie exists!!!!', movie in Movie.objects.all())
-        return ''
+        qs = self.get_queryset().filter(title=movie.title)
+        if qs.count() == 1:
+            new_movie = qs.first()
+            return new_movie
+        movie.save()
+        return movie
 
 class Movie(models.Model):
     title = models.CharField(max_length=100)
