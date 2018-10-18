@@ -1,10 +1,9 @@
+from movies.models import Movie
+
 def format_movie(qs_movie):
-    new_movie_title = qs_movie.POST.get('title')
-    new_movie_year = qs_movie.POST.get('year')
-    new_movie_poster = qs_movie.POST.get('poster')
-    new_movie = {
-        'title': new_movie_title,
-        'year': new_movie_year,
-        'poster': new_movie_poster
-    }
+    new_title = qs_movie.get('title')
+    new_year = qs_movie.get('year')
+    new_poster = qs_movie.get('poster')
+    new_movie = Movie(title=new_title, year)
+    print('new movie', new_movie)
     return new_movie

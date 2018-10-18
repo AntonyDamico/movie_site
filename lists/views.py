@@ -19,6 +19,7 @@ def add_movie_to_list_view(request):
     form = MovieForm(request.POST or None)
     context = {'form': form}
     if form.is_valid():
+        # maybe just remove the csfr token from request.POST instead of formating it
         new_movie = format_movie(request.POST)
         user_list = request.user.list
         user_list.add_movie_to_list(new_movie)
