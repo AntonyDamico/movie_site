@@ -12,7 +12,7 @@ def movie_list_view(request):
     context = {'movies': user_movies}
     return render(request, 'lists/list.html', context)
 
-def delete_movie_from_list(request, movie_id):
+def delete_movie_from_list_view(request, movie_id):
     user_list = request.user.list
     movie = get_object_or_404(Movie, pk=movie_id)
     # return HttpResponse(user.list.movie_in_list(movie))
