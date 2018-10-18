@@ -4,11 +4,22 @@ from django.db.models import signals
 
 from movieSiteDjango.utils import get_unique_slug
 
+class MovieManager(models.Manager):
+    def get_or_create(self, movie):
+        qs = self.get_queryset().filter(title=movie.title)
+        if qs.count() == 1:
+            new_movie = qs.first()
+            return new_movie
+        movie.save()
+        return movie
+
 class Movie(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(blank=True, unique=True)
     poster = models.CharField(max_length=500)
     year = models.IntegerField()
+
+    objects = MovieManager()
 
     def __str__(self):
         return self.title
