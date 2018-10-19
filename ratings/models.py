@@ -3,9 +3,17 @@ from django.conf import settings
 
 from movies.models import Movie
 
+
+class RatingManager(models.Manager):
+    def add_rating_to_movie(self, movie, rating=0):
+        new_movie_rating = Rating(movie=movie, rating=rating)
+        new_movie_rating.save()
+
 class Rating(models.Model):
     movie = models.OneToOneField(Movie, on_delete=models.CASCADE)
     rating = models.PositiveIntegerField(default=0)
+
+    objects = RatingManager()
 
     def __str__(self):
         return f'{self.movie} rating is {self.rating}'
