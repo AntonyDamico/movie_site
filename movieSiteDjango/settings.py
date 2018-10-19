@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     # apps
     'movies',
-    'lists'
+    'lists',
+    'ratings'
 ]
 
 MIDDLEWARE = [

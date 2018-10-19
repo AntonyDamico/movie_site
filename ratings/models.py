@@ -4,7 +4,7 @@ from django.conf import settings
 from movies.models import Movie
 
 class Rating(models.Model):
-    movie = models.ForeignKey(Movie, unique=True, on_delete=models.CASCADE)
+    movie = models.OneToOneField(Movie, on_delete=models.CASCADE)
     rating = models.PositiveIntegerField(default=None)
 
     def __str__(self):
