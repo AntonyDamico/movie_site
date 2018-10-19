@@ -1,3 +1,4 @@
+# pylint: disable=E1101
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -12,14 +13,11 @@ class Rating(models.Model):
     def __str__(self):
         return f'{self.movie} rating is {self.rating}'
 
-<<<<<<< HEAD
-=======
 def add_rating_to_movie_post_reciever(sender, instance, created, *args, **kwargs):
     if instance and created:
         Rating.objects.get_or_create(movie=instance)
 
 post_save.connect(add_rating_to_movie_post_reciever, sender=Movie)
->>>>>>> bug_movie_rating
 
 class UserRating(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
