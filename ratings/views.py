@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def rate_movie_view(request, movie_id):
+    pass

@@ -10,7 +10,18 @@
 <ul>
     {% for movie in movies %}
         <li>
+            {{ movie.rating.rating }}
             {{ movie.title }} --
+            <form action="" method="post">
+                <select>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <input type="submit" value="Vote">
+                </select>
+            </form>
             {% include 'lists/snippets/delete.html' %}
         </li>
     {% endfor %}
