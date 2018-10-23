@@ -23,11 +23,12 @@ post_save.connect(add_rating_to_movie_post_reciever, sender=Movie)
 
 
 class UserRatingManager(models.Manager):
-    def rate_new_movie(self, user, movie, rating):
-        new_rating = self(user, movie, rating)
-        new_rating.save()
+    def rate_new_movie(self, user, movie, user_rating):
+        new_user_rating = UserRating(user, movie, user_rating)
+        # new_rating.save()
         rating_obj = movie.rating
-        rating_obj.rating = (rating_obj + rating)/2
+        print(type(rating_obj.rating), rating_obj.rating)
+        rating_obj.rating = (rating_obj.rating + user_rating)/2
         rating_obj.save()
 
 class UserRating(models.Model):

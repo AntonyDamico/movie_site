@@ -12,7 +12,8 @@
         <li>
             {{ movie.rating.rating }}
             {{ movie.title }} --
-            <form action="" method="post">
+            <form action="{% url 'list:rate_movie' movie.id %}" method="post">
+                {% csrf_token %}
                 <select name="user-rating">
                     <option value="1">1</option>
                     <option value="2">2</option>
