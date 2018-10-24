@@ -23,19 +23,31 @@ post_save.connect(add_rating_to_movie_post_reciever, sender=Movie)
 
 
 class UserRatingManager(models.Manager):
-    def rate_new_movie(self, user, movie, user_rating):
-        new_user_rating = UserRating(user=user, movie=movie, user_rating=user_rating)
-        new_user_rating.save()
-        new_user_rating.save()
+    def rate_movie(self, user, movie, user_rating):
+        self.update_or_create_rating(user, movie, user_rating)
         rating_obj = movie.rating
-        print(type(rating_obj.rating), rating_obj.rating)
         rating_obj.rating = (rating_obj.rating + user_rating)/2
         rating_obj.save()
+
+    def update_or_create_rating(self, user, movie, user_rating):
+        qs = self.get_queryset().filter(user=user, movie=movie)
+        print('qs!!!! ', qs)
+        if qs.count() == 1:
+            old_rating = qs.first()
+            old_rating.rating = user_rating
+            old_rating.save()
+        else:
+            new_user_rating = UserRating(user=user, movie=movie, user_rating=user_rating)
+            new_user_rating.save()
+
+    # def remove_old_rating(self, old_rating, new_rating):
+    #     rating_obj = movie.rating
+        # rating_obj.rating = 
 
 class UserRating(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              blank=True, null=True, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, unique=True, on_delete=models.CASCADE)
+    movie = models.OneToOneField(Movie, on_delete=models.CASCADE)
     user_rating = models.PositiveIntegerField(default=0)
 
     objects = UserRatingManager()
