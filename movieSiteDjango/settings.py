@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+from env.secret_key import SECRET_KEY_PERSONAL
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'qb=+-gw0bcng52+uqn(y#m48od@8z@0(ex%ob+)f%q!u(i5)vj'
+SECRET_KEY = SECRET_KEY_PERSONAL
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
