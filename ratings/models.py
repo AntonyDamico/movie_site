@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 
 from movies.models import Movie
 
+
 class RatingManager(models.Manager):
     def update_rating(self, movie):
         final_rating = 0
@@ -15,6 +16,7 @@ class RatingManager(models.Manager):
         rating_obj = movie.rating
         rating_obj.rating = int(final_rating)
         rating_obj.save()
+
 
 class Rating(models.Model):
     movie = models.OneToOneField(Movie, on_delete=models.CASCADE)
@@ -48,7 +50,8 @@ class UserRatingManager(models.Manager):
             old_rating.save()
         else:
             print('!!!!!!!movie', movie)
-            new_user_rating = UserRating(user=user, movie=movie, user_rating=user_rating)
+            new_user_rating = UserRating(
+                user=user, movie=movie, user_rating=user_rating)
             new_user_rating.save()
 
 
