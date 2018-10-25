@@ -7,11 +7,9 @@ from movies.models import Movie
 
 class RatingManager(models.Manager):
     def update_rating(self, movie):
-        final_rating = 0
-        rating_list = movie.userrating_set.all()
-        for rating in rating_list:
-            final_rating += rating.user_rating
-        final_rating /= rating_list.count()
+        user_rating_qs = movie.userrating_set.all()
+        rating_list = [rating.user_rating for rating in user_rating_qs]
+        final_rating = sum(rating_list)/len(rating_list)
         rating_obj = movie.rating
         rating_obj.rating = int(final_rating)
         rating_obj.save()
