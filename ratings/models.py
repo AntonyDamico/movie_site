@@ -7,8 +7,14 @@ from movies.models import Movie
 
 class RatingManager(models.Manager):
     def update_rating(self, movie):
-        # sprodmedio de los user ratings
-        pass
+        final_rating = 0
+        rating_list = movie.userrating_set.all()
+        for rating in rating_list:
+            final_rating += rating.user_rating
+        final_rating /= rating_list.count()
+        rating_obj = movie.rating
+        rating_obj.rating = int(final_rating)
+        rating_obj.save()
 
 class Rating(models.Model):
     movie = models.OneToOneField(Movie, on_delete=models.CASCADE)
@@ -31,16 +37,14 @@ post_save.connect(add_rating_to_movie_post_reciever, sender=Movie)
 class UserRatingManager(models.Manager):
     def rate_movie(self, user, movie, user_rating):
         self.update_or_create_user_rating(user, movie, user_rating)
-        rating_obj = movie.rating
-        rating_obj.rating = (rating_obj.rating + user_rating)/2
-        rating_obj.save()
+        Rating.objects.update_rating(movie)
 
     def update_or_create_user_rating(self, user, movie, user_rating):
         qs = self.get_queryset().filter(user=user, movie=movie)
         print('qs!!!! ', qs)
         if qs.count() == 1:
             old_rating = qs.first()
-            old_rating.rating = user_rating
+            old_rating.user_rating = user_rating
             old_rating.save()
         else:
             print('!!!!!!!movie', movie)
