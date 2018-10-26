@@ -1,3 +1,4 @@
+# pylint: disable=E1101
 from django.db import models
 from django.urls import reverse
 from django.db.models import signals
@@ -28,6 +29,10 @@ class Movie(models.Model):
 
     def get_absolute_url(self):
         return reverse('posts:detail', kwargs={'slug': self.slug})
+
+    def get_user_rating(self, user):
+        user_rating_obj = self.userrating_set.get(user=user)
+        return user_rating_obj.user_rating
 
 
 def movie_pre_save_reciever(sender, instance, *args, **kwargs):

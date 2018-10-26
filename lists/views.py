@@ -11,8 +11,10 @@ from .utils import format_movie
 
 @login_required
 def movie_list_view(request):
-    user_list = request.user.list
-    user_movies = user_list.get_user_movies()
+    user = request.user
+    user_movies = user.list.get_user_movies()
+    for movie in user_movies:
+        movie.user_rating = movie.get_user_rating(user)
     context = {'movies': user_movies}
     return render(request, 'lists/list.html', context)
 
