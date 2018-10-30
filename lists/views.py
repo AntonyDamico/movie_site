@@ -7,14 +7,15 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
 
-from .serializers import ListSerializer
-from movies.serializers import MovieSerializer
+from movies.serializers import UserMovieSerializer, MovieSerializer
 from .models import List
 from movies.models import Movie
 from .forms import MovieForm
 from .utils import format_movie
 
+from django.contrib.auth.models import User
 
 # @login_required
 # def movie_list_view(request):
@@ -29,24 +30,36 @@ from .utils import format_movie
 @api_view(['GET'])
 def movie_list_view(request):
     user = request.user
-    if request.method == 'GET':
-        user_movies = user.list.get_user_movies()
-        # for movie in user_movies:
-        #     movie.user_rating = movie.get_user_rating(user)
-        serializer = MovieSerializer(user_movies, many=True)
-        return Response(serializer.data)
+    user_movies = user.list.get_user_movies()
+    for movie in user_movies:
+        movie.user_rating = movie.get_user_rating(user)
+    serializer = UserMovieSerializer(user_movies, many=True)
+    return Response(serializer.data)
 
 
-@login_required
+# @login_required
+# def add_movie_to_list_view(request):
+#     form = MovieForm(request.POST or None)
+#     context = {'form': form}
+#     if form.is_valid():
+#         new_movie = format_movie(request.POST)
+#         user_list = request.user.list
+#         user_list.add_movie_to_list(new_movie)
+#         return redirect('list:index')
+#     return render(request, 'lists/add_movie.html', context)
+
+# TODO: remove the comment and add the movie to the correct user list
+@csrf_exempt
+@permission_classes((permissions.AllowAny,))
+@api_view(['POST'])
 def add_movie_to_list_view(request):
-    form = MovieForm(request.POST or None)
-    context = {'form': form}
-    if form.is_valid():
-        new_movie = format_movie(request.POST)
-        user_list = request.user.list
-        user_list.add_movie_to_list(new_movie)
-        return redirect('list:index')
-    return render(request, 'lists/add_movie.html', context)
+    new_movie = Movie(**request.data)
+    # user_list = request.user.list
+    user_list = User.objects.first().list
+    user_list.add_movie_to_list(new_movie)
+    print(dir(request))
+    print('user!!!!! ', request.user)
+    return HttpResponse(request.user)
 
 
 def delete_movie_from_list_view(request, movie_id):

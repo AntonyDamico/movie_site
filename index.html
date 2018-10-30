@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    Hello
+    http://localhost:8000/list/create
+    <script>
+        const url = 'http://localhost:8000/list/create'
+        const data = {
+            'title': 'Searching',
+            'poster': 'blag',
+            'year': 133
+        }
+        fetch(url, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            body: JSON.stringify(data)
+        }).catch(e => console.log('eror!!!!', e))
+    </script>
+</body>
+
+</html>
