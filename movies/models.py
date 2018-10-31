@@ -10,8 +10,10 @@ class MovieManager(models.Manager):
     def get_or_create(self, movie):
         qs = self.get_queryset().filter(title=movie.title)
         if qs.count() == 1:
+            print('old movie')
             new_movie = qs.first()
             return new_movie
+        print('new movie', movie)
         movie.save()
         return movie
 
