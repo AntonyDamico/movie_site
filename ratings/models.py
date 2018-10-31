@@ -39,15 +39,13 @@ class UserRatingManager(models.Manager):
         self.update_or_create_user_rating(user, movie, user_rating)
         Rating.objects.update_rating(movie)
 
-    def update_or_create_user_rating(self, user, movie, user_rating):
+    def update_or_create_user_rating(self, user, movie, user_rating=0):
         qs = self.get_queryset().filter(user=user, movie=movie)
-        print('qs!!!! ', qs)
         if qs.count() == 1:
             old_rating = qs.first()
             old_rating.user_rating = user_rating
             old_rating.save()
         else:
-            print('!!!!!!!movie', movie)
             new_user_rating = UserRating(
                 user=user, movie=movie, user_rating=user_rating)
             new_user_rating.save()
