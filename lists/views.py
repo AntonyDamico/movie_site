@@ -50,14 +50,13 @@ def movie_list_view(request):
 
 # TODO: remove the comment and add the movie to the correct user list
 @csrf_exempt
-@permission_classes((permissions.AllowAny,))
+@permission_classes((permissions.IsAuthenticated,))
 @api_view(['POST'])
 def add_movie_to_list_view(request):
     new_movie = Movie(**request.data)
-    # user_list = request.user.list
-    user_list = User.objects.first().list
+    user_list = request.user.list
+    # user_list = User.objects.first().list
     user_list.add_movie_to_list(new_movie)
-    print(dir(request))
     print('user!!!!! ', request.user)
     return HttpResponse(request.user)
 
