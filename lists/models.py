@@ -24,7 +24,7 @@ class List(models.Model):
 
     def add_movie_to_list(self, movie):
         new_movie = Movie.objects.get_or_create(movie)
-        UserRating.objects.update_or_create_user_rating(self.user, new_movie)
+        # UserRating.objects.update_or_create_user_rating(self.user, new_movie)
         self.movie_list.add(new_movie)
 
     def remove_movie_from_list(self, movie):

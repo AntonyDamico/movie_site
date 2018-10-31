@@ -32,9 +32,15 @@ class Movie(models.Model):
     def get_absolute_url(self):
         return reverse('posts:detail', kwargs={'slug': self.slug})
 
+    def get_movie_rating(self):
+        return self.rating.rating
+
     def get_user_rating(self, user):
-        user_rating_obj = self.userrating_set.get(user=user)
-        return user_rating_obj.user_rating
+        user_rating_qs = self.userrating_set.filter(user=user)
+        if user_rating_qs.count() == 1:
+            user_rating_obj = user_rating_qs.first()
+            return user_rating_obj.user_rating
+        return None
 
 
 def movie_pre_save_reciever(sender, instance, *args, **kwargs):

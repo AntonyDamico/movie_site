@@ -28,11 +28,13 @@ from django.contrib.auth.models import User
 
 
 @api_view(['GET'])
+@permission_classes((permissions.IsAuthenticated,))
 def movie_list_view(request):
     user = request.user
     user_movies = user.list.get_user_movies()
     for movie in user_movies:
         movie.user_rating = movie.get_user_rating(user)
+        movie.movie_rating = movie.get_movie_rating()
     serializer = UserMovieSerializer(user_movies, many=True)
     return Response(serializer.data)
 
