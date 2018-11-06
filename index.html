@@ -9,7 +9,7 @@
     <style>
         body {
             background-color: black;
-            color: rgb(200,200,200);
+            color: rgb(200, 200, 200);
         }
     </style>
 </head>
@@ -30,8 +30,12 @@
                 console.log(data)
                 return data
             })
+            //.then(data => {
+            //    post_movie(data.token)
+            //   return data
+            // })
             .then(data => {
-                post_movie(data.token)
+                delete_moive(data.token)
                 return data
             })
             .then(data => fetch_movies(data.token))
@@ -68,6 +72,21 @@
             }).then(res => res.json())
                 .then(res => console.log(res))
                 .catch(e => console.log('error!', e))
+        }
+
+        const delete_url = 'http://localhost:8000/list/18/delete'
+
+
+        delete_moive = token => {
+            fetch(delete_url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => console.log(res))
+                .catch(err => console.error('error', err))
         }
     </script>
 </body>
