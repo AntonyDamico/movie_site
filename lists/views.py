@@ -69,8 +69,9 @@ def add_movie_to_list_view(request):
 #         return redirect('list:index')
 #     return redirect('list:index')
 
-# @permission_classes((permissions.IsAuthenticated,))
-# @api_view(['POST'])
-# def delete_movie_from_list_view(request,movie_id):
-#     user_list = request.user.list
-
+@permission_classes((permissions.IsAuthenticated,))
+@api_view(['POST'])
+def delete_movie_from_list_view(request,movie_id):
+    user_list = request.user.list
+    movie = get_object_or_404(Movie, pk=movie_id)    
+    return HttpResponse(request.user)
