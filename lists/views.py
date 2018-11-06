@@ -61,10 +61,16 @@ def add_movie_to_list_view(request):
     return HttpResponse(request.user)
 
 
-def delete_movie_from_list_view(request, movie_id):
-    user_list = request.user.list
-    movie = get_object_or_404(Movie, pk=movie_id)
-    if user_list.movie_in_list(movie):
-        user_list.remove_movie_from_list(movie)
-        return redirect('list:index')
-    return redirect('list:index')
+# def delete_movie_from_list_view(request, movie_id):
+#     user_list = request.user.list
+#     movie = get_object_or_404(Movie, pk=movie_id)
+#     if user_list.movie_in_list(movie):
+#         user_list.remove_movie_from_list(movie)
+#         return redirect('list:index')
+#     return redirect('list:index')
+
+# @permission_classes((permissions.IsAuthenticated,))
+# @api_view(['POST'])
+# def delete_movie_from_list_view(request,movie_id):
+#     user_list = request.user.list
+
