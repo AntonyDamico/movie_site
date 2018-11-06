@@ -27,14 +27,18 @@ from django.contrib.auth.models import User
 #     return render(request, 'lists/list.html', context)
 
 
+def add_ratings_to_movie(movie, user=None):
+    movie.movie_rating = movie.get_movie_rating()
+    if user is not None:
+        movie.user_rating = movie.get_user_rating(user)
+
 @api_view(['GET'])
 @permission_classes((permissions.IsAuthenticated,))
 def movie_list_view(request):
     user = request.user
     user_movies = user.list.get_user_movies()
     for movie in user_movies:
-        movie.user_rating = movie.get_user_rating(user)
-        movie.movie_rating = movie.get_movie_rating()
+        add_ratings_to_movie(movie, user)
     serializer = UserMovieSerializer(user_movies, many=True)
     return Response(serializer.data)
 
@@ -58,7 +62,9 @@ def add_movie_to_list_view(request):
     new_movie = Movie(**request.data)
     user_list = request.user.list
     user_list.add_movie_to_list(new_movie)
-    return HttpResponse(request.user)
+    add_ratings_to_movie(new_movie)
+    serializer = MovieSerializer(new_movie)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 # def delete_movie_from_list_view(request, movie_id):

@@ -9,7 +9,7 @@
     <style>
         body {
             background-color: black;
-            color: rgb(200,200,200);
+            color: rgb(200, 200, 200);
         }
     </style>
 </head>
@@ -41,7 +41,7 @@
 
         const url = 'http://localhost:8000/list/create'
         const data = {
-            title: 'djldkfajslkfjdskla DAM',
+            title: 'd DAM',
             poster: 'blag',
             year: 133
         }
@@ -54,7 +54,10 @@
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(data)
-            }).catch(e => console.log('eror!!!!', e))
+            })
+                .then(res => res.json())
+                .then(data => console.log(data))
+                .catch(e => console.log('eror!!!!', e))
         }
 
         const fetch_url = 'http://localhost:8000/list'
