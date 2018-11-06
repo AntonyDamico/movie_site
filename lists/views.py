@@ -1,7 +1,7 @@
 # pylint: disable=E1101
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import status, permissions
@@ -75,8 +75,13 @@ def add_movie_to_list_view(request):
 #         return redirect('list:index')
 #     return redirect('list:index')
 
-# @permission_classes((permissions.IsAuthenticated,))
-# @api_view(['POST'])
-# def delete_movie_from_list_view(request,movie_id):
-#     user_list = request.user.list
-
+@permission_classes((permissions.IsAuthenticated,))
+@api_view(['POST'])
+def delete_movie_from_list_view(request, movie_id):
+    user_list = request.user.list
+    movie = get_object_or_404(Movie, pk=movie_id)
+    if user_list.movie_in_list(movie):
+        user_list.remove_movie_from_list(movie)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        # return HttpResponse("movie removed")
+    return Response(status=status.HTTP_404_NOT_FOUND)
